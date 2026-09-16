@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
-<head>
+<html lang="ru"><head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Дерево вечера — Саша и Алёна</title>
@@ -18,17 +17,23 @@ h1{margin:6px 0 8px;font-size:28px}
 button{font:inherit;cursor:pointer}
 .ch{display:block;width:100%;text-align:left;background:#241e1a;color:#f4ece3;border:1px solid #56483c;border-radius:14px;padding:14px;margin:0 0 10px;font-size:17px}
 .ch small{display:block;color:#cbbba8;font-size:13px;margin-top:4px}
-.ghost{background:transparent;color:#cbbba8;border:1px solid #4a3d33;border-radius:12px;padding:10px 12px;margin-right:8px}
+.ghost{background:transparent;color:#cbbba8;border:1px solid #4a3d33;border-radius:12px;padding:10px 12px}
 .tag{display:inline-block;background:#4a3424;color:#e0a36a;border-radius:99px;padding:4px 10px;font-size:12px}
 .act{background:#241e1a;border:1px solid #4c4036;border-radius:12px;padding:12px;margin:8px 0}
 </style></head>
 <body><div class="wrap">
 <p class="k">Саша и Алёна</p>
 <h1>Дерево вечера</h1>
-<p class="muted">Четыре вопроса. В конце два близких варианта, не «как хочешь».</p>
-<div class="rules"><b style="color:#ead7be">Как идти.</b> Вопросы ведёт один, следующий вечер другой. 10 секунд на ответ. Молчите — левая кнопка. У второго одно вето: «соседняя ветка».</div>
+<p class="muted">Четыре вопроса. В конце два близких варианта.</p>
+<div class="rules"><b style="color:#ead7be">Как идти.</b> Вопросы ведёт один, следующий вечер другой. 10 секунд на ответ. Молчите — левая кнопка.</div>
 <div class="bar" id="bar"></div>
 <div class="card" id="card"></div>
 </div>
-<script src="https://cdn.jsdelivr.net/gh/alena8jan-web/derevo-vechera@83752471bb38e3f3a29cb735c57558a4ecabf051/tree.js"></script>
+<script src="./tree.js"></script>
+<script>
+if(typeof go!=='function'){
+var s=document.createElement('script');
+s.src='https://cdn.jsdelivr.net/gh/alena8jan-web/derevo-vechera@83752471bb38e3f3a29cb735c57558a4ecabf051/tree.js';
+document.body.appendChild(s);}
+</script>
 </body></html>
