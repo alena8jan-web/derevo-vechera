@@ -15,7 +15,8 @@ h1{font-weight:400;font-size:32px;margin:6px 0 4px}
 .bar{display:flex;gap:5px;margin:16px 0}
 .dot{height:5px;flex:1;border-radius:99px;background:#3c322b}
 .dot.on{background:var(--acc)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;overflow:hidden}
+.art{width:calc(100% + 36px);margin:-18px -18px 14px;height:168px;object-fit:cover;display:block;border-bottom:1px solid var(--line)}
 .q{font-size:26px;line-height:1.25;margin:0 0 14px}
 button{font:inherit;cursor:pointer}
 .ch{display:block;width:100%;text-align:left;background:var(--btn);color:var(--ink);border:1px solid #56483c;border-radius:16px;padding:16px 14px;margin:0 0 10px;font-size:18px}
@@ -37,7 +38,46 @@ button{font:inherit;cursor:pointer}
 <div class="card" id="card"></div>
 </div>
 <script>
-const BACK=["Фильм","Прогулка по району","Массаж","Готовка","Рилсы на одном диване"];
+const ART={
+start:"art/cover.jpg",place:"art/lazy.jpg",energy:"art/tennis.jpg",side:"art/ice.jpg",
+vec:"art/dance.jpg",move:"art/knives.jpg",touch:"art/ice.jpg",playt:"art/costumes.jpg",
+screenp:"art/costumes.jpg",noscreen:"art/ice.jpg",rest:"art/massage.jpg",sam:"art/knives.jpg",
+body:"art/dance.jpg",hands:"art/coffee.jpg",talk:"art/coffee.jpg",watch:"art/sofa.jpg",
+plot:"art/sofa.jpg",bg:"art/lazy.jpg",game:"art/arcade.jpg",one:"art/arcade.jpg",quiz:"art/arcade.jpg",
+own:"art/arcade.jpg",make:"art/coffee.jpg",par:"art/lazy.jpg",parmove:"art/tennis.jpg",
+motor:"art/coffee.jpg",partalk:"art/arcade.jpg",near:"art/dance.jpg",dist:"art/moto.jpg",
+voice:"art/coffee.jpg",dscr:"art/arcade.jpg",dphoto:"art/photo.jpg",ride:"art/moto.jpg",
+pace:"art/forest.jpg",aim:"art/forest.jpg",job:"art/tennis.jpg",sport:"art/badminton.jpg",
+class:"art/knives.jpg",spot:"art/banya.jpg",air:"art/forest.jpg",sit:"art/coffee.jpg",
+food:"art/coffee.jpg",bench:"art/forest.jpg",walk:"art/forest.jpg",feet:"art/forest.jpg",car:"art/moto.jpg"
+};
+const RESULT={
+"Обучение за просмотром":"art/sofa.jpg","Фотосет костюмчиков":"art/costumes.jpg","Глаза в глаза":"art/ice.jpg",
+"Игрушки":"art/costumes.jpg","Массаж":"art/massage.jpg","Чувственный фокус":"art/massage.jpg",
+"Танцевальная связка":"art/dance.jpg","Тренировка":"art/tennis.jpg","Медленные танцы":"art/dance.jpg",
+"Метание ножей":"art/knives.jpg","Фланкировка шашкой":"art/knives.jpg","Конструктор":"art/lazy.jpg",
+"Кухня":"art/coffee.jpg","Рисунок персонажа":"art/photo.jpg","Фильм":"art/sofa.jpg","Аниме":"art/sofa.jpg",
+"Документалка":"art/sofa.jpg","Подкаст":"art/coffee.jpg","Рилсы":"art/lazy.jpg","Лоу-фай":"art/lazy.jpg",
+"Настолка":"art/coffee.jpg","Угадай песню":"art/karaoke.jpg","Ютуб-квиз":"art/arcade.jpg",
+"Совместная компьютерная игра":"art/arcade.jpg","Саша играет, Алёна смотрит":"art/arcade.jpg",
+"Каждый в своей игре":"art/arcade.jpg","Озвучка фильма":"art/karaoke.jpg","История с ИИ":"art/sofa.jpg",
+"Ютуб-урок и сразу проба":"art/coffee.jpg","Тренировка full-body":"art/tennis.jpg",
+"Конструктор и ассистент":"art/lazy.jpg","Инструмент и другое дело рядом":"art/coffee.jpg",
+"Алёна танцует, Саша смотрит":"art/dance.jpg","Фото каждый час":"art/photo.jpg","Домашние дела":"art/lazy.jpg",
+"Мягкие вопросы":"art/coffee.jpg","Чтение вслух":"art/sofa.jpg","Кадр каждый час":"art/photo.jpg",
+"Бадминтон":"art/badminton.jpg","Большой теннис":"art/tennis.jpg","Боулинг":"art/arcade.jpg",
+"Бильярд":"art/arcade.jpg","Батутный парк":"art/dance.jpg","Велик или ролики":"art/moto.jpg",
+"Коньки":"art/ice.jpg","Воркаут":"art/tennis.jpg","Каяк или сап":"art/forest.jpg","Аэротруба":"art/moto.jpg",
+"Каток":"art/ice.jpg","Гончарная мастерская":"art/coffee.jpg","Фото-охота":"art/photo.jpg",
+"Баня":"art/banya.jpg","Музей":"art/forest.jpg","Планетарий":"art/forest.jpg","Караоке или бар":"art/karaoke.jpg",
+"Дегустация":"art/coffee.jpg","Двойное свидание":"art/coffee.jpg","Кафе":"art/coffee.jpg",
+"Костёр или шашлыки":"art/forest.jpg","Пикник":"art/forest.jpg","Лавочка":"art/forest.jpg",
+"Закат":"art/forest.jpg","Вода":"art/forest.jpg","Прогулка":"art/forest.jpg","Ботанический сад":"art/forest.jpg",
+"Рассвет":"art/forest.jpg","Ночная автопрогулка":"art/moto.jpg","Однодневка в другой город":"art/moto.jpg",
+"Ночь в отеле своего города":"art/lazy.jpg"
+};
+function artFor(){const id=stack[stack.length-1];return ART[id]||"art/cover.jpg";}
+function fig(src){return '<img class="art" src="'+src+'" alt="">';}
 function pack(q,items){return {q,pick:items};}
 const N={
 start:{q:"Вместе или на расстоянии?",o:[["Вместе","place"],["На расстоянии","dist"]]},
@@ -96,7 +136,8 @@ function alarm(){
 }
 function restart(){stack=["start"];draw();}
 function choose(t,n){
-  document.getElementById("card").innerHTML='<div class="tag">Дело на сейчас</div><div class="act">'+t+'</div><p class="note">'+n+'</p><div class="row"><button class="ghost" onclick="back()">Назад</button><button class="ghost" onclick="restart()">Сначала</button></div><button class="alarm" onclick="alarm()">ALARM · запас</button>';
+  const src=RESULT[t]||artFor();
+  document.getElementById("card").innerHTML=fig(src)+'<div class="tag">Дело на сейчас</div><div class="act">'+t+'</div><p class="note">'+n+'</p><div class="row"><button class="ghost" onclick="back()">Назад</button><button class="ghost" onclick="restart()">Сначала</button></div><button class="alarm" onclick="alarm()">ALARM · запас</button>';
 }
 function draw(){
   const node=N[stack[stack.length-1]];
@@ -105,10 +146,10 @@ function draw(){
   const card=document.getElementById("card");
   if(node.t){choose(node.t,node.n);return;}
   if(node.pick){
-    card.innerHTML='<div class="q">'+node.q+'</div>'+node.pick.map((o,i)=>'<button class="ch" onclick="fromPack('+i+')">'+o[0]+'</button>').join("")+'<button class="alarm" onclick="alarm()">ALARM · запас</button><div class="row"><button class="ghost" onclick="back()">Назад</button></div>';
+    card.innerHTML=fig(artFor())+'<div class="q">'+node.q+'</div>'+node.pick.map((o,i)=>'<button class="ch" onclick="fromPack('+i+')">'+o[0]+'</button>').join("")+'<button class="alarm" onclick="alarm()">ALARM · запас</button><div class="row"><button class="ghost" onclick="back()">Назад</button></div>';
     return;
   }
-  card.innerHTML='<div class="q">'+node.q+'</div>'+node.o.map((o,i)=>'<button class="ch" onclick="pick('+i+')">'+o[0]+'</button>').join("")+'<button class="alarm" onclick="alarm()">ALARM · запас</button>'+(stack.length>1?'<div class="row"><button class="ghost" onclick="back()">Назад</button></div>':'');
+  card.innerHTML=fig(artFor())+'<div class="q">'+node.q+'</div>'+node.o.map((o,i)=>'<button class="ch" onclick="pick('+i+')">'+o[0]+'</button>').join("")+'<button class="alarm" onclick="alarm()">ALARM · запас</button>'+(stack.length>1?'<div class="row"><button class="ghost" onclick="back()">Назад</button></div>':'');
 }
 function fromPack(i){const o=N[stack[stack.length-1]].pick[i];choose(o[0],o[1]);}
 function pick(i){
