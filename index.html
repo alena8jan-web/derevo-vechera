@@ -1,39 +1,128 @@
 <!DOCTYPE html>
-<html lang="ru"><head>
+<html lang="ru">
+<head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Дерево вечера — Саша и Алёна</title>
+<title>Дерево вечера</title>
 <style>
-body{margin:0;font-family:sans-serif;background:#1c1714;color:#f4ece3;padding:20px 16px}
-.wrap{max-width:720px;margin:auto}
-.k{letter-spacing:.12em;text-transform:uppercase;font-size:11px;color:#e0a36a}
-h1{margin:6px 0 8px;font-size:28px}
-.muted{color:#cbbba8}
-.rules{margin:16px 0;padding:14px;border:1px solid #4a3d33;border-radius:14px;color:#cbbba8;font-size:14px}
-.bar{display:flex;gap:6px;margin:10px 0 16px}
-.dot{height:6px;flex:1;border-radius:99px;background:#3c322b}
-.dot.on{background:#c9844a}
-.card{background:#312821;border:1px solid #4a3d33;border-radius:20px;padding:20px}
+:root{--bg:#1c1714;--ink:#f4ece3;--muted:#cbbba8;--line:#4a3d33;--card:#312821;--btn:#241e1a;--acc:#c9844a;--acc2:#e0a36a}
+*{box-sizing:border-box}
+body{margin:0;font-family:Georgia,"Times New Roman",serif;background:var(--bg);color:var(--ink)}
+.wrap{max-width:560px;margin:auto;padding:22px 16px 40px}
+.k{letter-spacing:.16em;text-transform:uppercase;font-size:11px;color:var(--acc2);font-family:sans-serif}
+h1{font-weight:400;font-size:32px;margin:6px 0 4px}
+.sub{color:var(--muted);font-size:15px;line-height:1.4}
+.bar{display:flex;gap:5px;margin:16px 0}
+.dot{height:5px;flex:1;border-radius:99px;background:#3c322b}
+.dot.on{background:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px}
+.q{font-size:26px;line-height:1.25;margin:0 0 14px}
 button{font:inherit;cursor:pointer}
-.ch{display:block;width:100%;text-align:left;background:#241e1a;color:#f4ece3;border:1px solid #56483c;border-radius:14px;padding:14px;margin:0 0 10px;font-size:17px}
-.ch small{display:block;color:#cbbba8;font-size:13px;margin-top:4px}
-.ghost{background:transparent;color:#cbbba8;border:1px solid #4a3d33;border-radius:12px;padding:10px 12px}
-.tag{display:inline-block;background:#4a3424;color:#e0a36a;border-radius:99px;padding:4px 10px;font-size:12px}
-.act{background:#241e1a;border:1px solid #4c4036;border-radius:12px;padding:12px;margin:8px 0}
-</style></head>
-<body><div class="wrap">
+.ch{display:block;width:100%;text-align:left;background:var(--btn);color:var(--ink);border:1px solid #56483c;border-radius:16px;padding:16px 14px;margin:0 0 10px;font-size:18px}
+.alarm{display:block;width:100%;margin-top:6px;background:#6e2c24;color:#f6d7d1;border:1px solid #a85a4e;border-radius:16px;padding:14px;font-size:16px;font-family:sans-serif;letter-spacing:.04em}
+.row{display:flex;gap:8px;margin-top:12px}
+.ghost{background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-family:sans-serif;font-size:14px}
+.act{font-size:30px;line-height:1.2;margin:6px 0 8px}
+.note{color:var(--muted);font-size:16px}
+.tag{display:inline-block;background:#4a3424;color:var(--acc2);border-radius:99px;padding:4px 10px;font-size:12px;font-family:sans-serif;margin-bottom:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
 <p class="k">Саша и Алёна</p>
 <h1>Дерево вечера</h1>
-<p class="muted">Четыре вопроса. В конце два близких варианта.</p>
-<div class="rules"><b style="color:#ead7be">Как идти.</b> Вопросы ведёт один, следующий вечер другой. 10 секунд на ответ. Молчите — левая кнопка.</div>
+<p class="sub">Один ведёт вопросы. 10 секунд. Молчите — верхняя кнопка. Красная кнопка — запас, который точно работает.</p>
 <div class="bar" id="bar"></div>
 <div class="card" id="card"></div>
 </div>
-<script src="./tree.js"></script>
 <script>
-if(typeof go!=='function'){
-var s=document.createElement('script');
-s.src='https://cdn.jsdelivr.net/gh/alena8jan-web/derevo-vechera@83752471bb38e3f3a29cb735c57558a4ecabf051/tree.js';
-document.body.appendChild(s);}
+const BACK=["Фильм","Прогулка по району","Массаж","Готовка","Рилсы на одном диване"];
+const N={
+start:{q:"Вместе или на расстоянии?",o:[["Вместе","place"],["На расстоянии","dist"]]},
+place:{q:"Дом или улица?",o:[["Дом","energy"],["Улица","ride"]]},
+energy:{q:"Активно или лениво?",o:[["Активно","side",{e:"hot"}],["Лениво","side",{e:"soft"}]]},
+side:{q:"Друг с другом или параллельно?",o:[["Друг с другом","vec",{s:"we"}],["Параллельно","par",{s:"par"}]]},
+vec:{q:"Движение или разговор?",o:[["Движение","move"],["Разговор","talk"]]},
+move:{q:"Тактильность или результат самурая?",o:[["Тактильность","touch"],["Результат самурая","sam"]]},
+touch:{q:"Игра или расслабление?",o:[["Игра","playt"],["Расслабление","rest"]]},
+playt:{q:"Экран или без экрана?",o:[["Экран","screenp"],["Без экрана","noscreen"]]},
+screenp:{q:"Роль или кадр?",o:[["Роль",{t:"Обучение за просмотром",n:"Короткий ролик и сразу повтор."}],["Кадр",{t:"Фотосет костюмчиков",n:"10 минут, не для инсты. В общую группу."}]]},
+noscreen:{q:"Взгляд или предмет?",o:[["Взгляд",{t:"Глаза в глаза",n:"Три минуты, без разговора."}],["Предмет",{t:"Игрушки",n:"Одна, без меню из десяти."}]]},
+rest:{q:"Руки делают или просто внимание?",o:[["Руки",{t:"Массаж",n:"Без таймера. Один ведёт."}],["Внимание",{t:"Чувственный фокус",n:"Одна зона, медленно."}]]},
+sam:{q:"Тело или предмет?",o:[["Тело","body"],["Предмет","thing"]]},
+body:{q:"Схема или просто тело?",o:[["Схема",{t:"Танцевальная связка",n:"Одна песня.",hot:"Тренировка дома",hotn:"Короткий комплекс на двоих."}],["Просто тело",{t:"Медленные танцы",n:"Три песни, без схемы.",hot:"Дыхание спина к спине",hotn:"Пять минут."}]]},
+thing:{q:"Клинок, стол или рисунок?",o:[["Клинок","blade"],["Стол","table"],["Рисунок",{t:"Рисунок персонажа по описанию",n:"Один описывает, второй рисует."}]]},
+blade:{q:"Ножи или шашка?",o:[["Ножи",{t:"Метание ножей",n:"Мишень, если место позволяет."}],["Шашка",{t:"Фланкирование шашкой",n:"Короткая форма."}]]},
+table:{q:"Конструктор или кухня?",o:[["Конструктор",{t:"Лего, пазл или конструктор",n:"Одна общая цель."}],["Кухня",{t:"Готовка в четыре руки",n:"Одно блюдо."}]]},
+talk:{q:"Смотрим, играем или делаем?",o:[["Смотрим","watch"],["Играем","game"],["Делаем","make"]]},
+watch:{q:"Сюжет или фон?",o:[["Сюжет","plot"],["Фон","bg"]]},
+plot:{q:"Выдумка или реальность?",o:[["Выдумка","fiction"],["Реальность",{t:"Документалка",n:"Одна, с паузой если надо."}]]},
+fiction:{q:"Наш мир или нарисованный?",o:[["Наш мир",{t:"Фильм",n:"Два названия, тянете жребий."}],["Нарисованный",{t:"Аниме",n:"Одна серия или фильм."}]]},
+bg:{q:"Голос, картинка или тишина?",o:[["Голос",{t:"Подкаст",n:"Один выпуск."}],["Картинка",{t:"Рилсы",n:"Один телефон на двоих."}],["Тишина",{t:"Лоу-фай",n:"Фоном, без ленты."}]]},
+game:{q:"Одно поле или каждый своё?",o:[["Одно поле","one"],["Каждый своё","own"]]},
+one:{q:"Доска, экран или голос?",o:[["Доска",{t:"Настолка",n:"Одна партия."}],["Экран","screen"],["Голос",{t:"Угадай песню",n:"По пять фрагментов."}]]},
+screen:{q:"Квиз или сюжет?",o:[["Квиз",{t:"Ютуб-квиз",n:"Одна ссылка на двоих."}],["Сюжет",{t:"Совместная компьютерная игра",n:"Кооп, одна сессия."}]]},
+own:{q:"Смотрим одного или оба в своём?",o:[["Одного",{t:"Саша играет, Алёна смотрит",n:"Можно комментировать."}],["Оба","both"]]},
+both:{q:"Своя игра или катка?",o:[["Своя игра",{t:"Каждый в своей игре",n:"Одна комната."}],["Катка",{t:"Катка и рилсы рядом",n:"Без отчёта."}]]},
+make:{q:"Чужой сюжет, свой сюжет или руки?",o:[["Чужой сюжет",{t:"Озвучка фильма",n:"Десять минут сцены."}],["Свой сюжет",{t:"История с ИИ",n:"По очереди, один ход каждый."}],["Руки",{t:"Ютуб-урок и сразу проба",n:"20 минут и стоп."}]]},
+par:{q:"Движение или разговор?",o:[["Движение","parmove"],["Разговор","partalk"]]},
+parmove:{q:"Тело или руки?",o:[["Тело",{t:"Один тренируется, второй ставит таймер",n:"15 минут."}],["Руки","parhands"]]},
+parhands:{q:"Сборка или звук?",o:[["Сборка",{t:"Конструктор и ассистент",n:"Можно комментировать."}],["Звук",{t:"Инструмент и другое дело рядом",n:"Не обязательно дуэт."}]]},
+partalk:{q:"Экран или фон?",o:[["Экран","parscreen"],["Фон","parbg"]]},
+parscreen:{q:"Одного смотрим или оба в своём?",o:[["Одного",{t:"Саша играет, Алёна смотрит",n:"Рядом."}],["Оба",{t:"Каждый в своей игре",n:"Одна комната."}]]},
+parbg:{q:"Плейлисты или фото дня?",o:[["Плейлисты",{t:"Параллельные плейлисты",n:"Иногда одно ухо."}],["Фото дня",{t:"Фото каждый час",n:"В общую группу. Не для инсты."}]]},
+dist:{q:"Голос, экран или фото?",o:[["Голос","voice"],["Экран","dscr"],["Фото","dphoto"]]},
+voice:{q:"Вопросы, глава или песня?",o:[["Вопросы",{t:"Мягкие вопросы",n:"По одной карточке."}],["Глава",{t:"Чтение вслух",n:"Звонок, одна глава."}],["Песня",{t:"Угадай песню",n:"Голосовые."}]]},
+dscr:{q:"Квиз, чужой сюжет или свой?",o:[["Квиз",{t:"Ютуб-квиз",n:"Одна ссылка."}],["Чужой сюжет",{t:"Озвучка фильма",n:"Онлайн."}],["Свой",{t:"История с ИИ",n:"Ход через ход."}]]},
+dphoto:{q:"Кадр каждый час или рисунок?",o:[["Кадр каждый час",{t:"Фото каждый час",n:"Рабочий день или выходной, в группу."}],["Рисунок",{t:"Рисунок персонажа по описанию",n:"Фото результата в группу."}]]},
+ride:{q:"Кружим на районе или едем сквозь мглистых гор хребет?",o:[["Кружим на районе","pace",{r:"near"}],["Хребет","pace",{r:"far"}]]},
+pace:{q:"Активно или спокойно?",o:[["Активно","aim",{p:"hot"}],["Спокойно","aim",{p:"soft"}]]},
+aim:{q:"Занятие с целью или атмосфера?",o:[["Занятие","job"],["Атмосфера","air"]]},
+job:{q:"Спорт, мастер-класс или место?",o:[["Спорт","sport"],["Мастер-класс","class"],["Место","spot"]]},
+sport:{q:"Мяч или тело?",o:[["Мяч","ball"],["Тело","phys"]]},
+ball:{q:"Ракетка, корт или батут?",o:[["Ракетка",{t:"Бадминтон",n:"Один сет."}],["Корт",{t:"Большой теннис",n:"Час."}],["Батут",{t:"Батутный парк",n:"40 минут."}]]},
+phys:{q:"Колёса, вода или зал?",o:[["Колёса","wheels"],["Вода",{t:"Каяк или сап",n:"Ближняя вода."}],["Зал","hall"]]},
+wheels:{q:"Два колеса или лёд?",o:[["Два колеса",{t:"Велик или ролики",n:"Маршрут на район."}],["Лёд",{t:"Коньки",n:"Каток, если открыт."}]]},
+hall:{q:"Двор, труба или лёд?",o:[["Двор",{t:"Воркаут-площадка",n:"20 минут."}],["Труба",{t:"Аэротруба",n:"Один полёт каждому."}],["Лёд",{t:"Каток",n:"Час."}]]},
+class:{q:"Глина, клинок или кадр?",o:[["Глина",{t:"Гончарная мастерская",n:"Одна чашка на двоих."}],["Клинок","outblade"],["Кадр",{t:"Живая фотосессия",n:"20 кадров, не для ленты."}]]},
+outblade:{q:"Ножи или шашка?",o:[["Ножи",{t:"Метание ножей",n:"Зал или клуб."}],["Шашка",{t:"Фланкирование шашкой",n:"Площадка, где можно."}]]},
+spot:{q:"Тело греть, смотреть или люди?",o:[["Тело",{t:"Баня",n:"Без программы на вечер."}],["Смотреть","look"],["Люди","people"]]},
+look:{q:"Картины, звёзды или сцена?",o:[["Картины",{t:"Музей",n:"Один зал."}],["Звёзды",{t:"Планетарий",n:"Один сеанс."}],["Сцена",{t:"Концерт любимой группы",n:"Если нет билетов — живая музыка."}]]},
+people:{q:"Еда, шары или другая пара?",o:[["Еда",{t:"Винная или пивная дегустация",n:"Три позиции."}],["Шары",{t:"Боулинг",n:"Одна дорожка."}],["Другая пара",{t:"Двойное свидание",n:"Одно место."}]]},
+air:{q:"Сидеть или идти?",o:[["Сидеть","sit"],["Идти","walk"]]},
+sit:{q:"Еда или просто место?",o:[["Еда","food"],["Просто место","bench"]]},
+food:{q:"Стол, огонь или плед?",o:[["Стол",{t:"Кафе",n:"Ближайшее, если район. Незнакомое, если хребет."}],["Огонь",{t:"Костёр или шашлыки",n:"Одно место."}],["Плед",{t:"Пикник",n:"Еда с собой."}]]},
+bench:{q:"Лавочка, закат или вода?",o:[["Лавочка",{t:"Лавочка",n:"Никуда не спешим."}],["Закат",{t:"Закат",n:"Одна точка."}],["Вода",{t:"Вода",n:"Набережная или смотровая."}]]},
+walk:{q:"Ноги или машина?",o:[["Ноги","feet"],["Машина","car"]]},
+feet:{q:"Просто идти, сад или рассвет?",o:[["Просто идти",{t:"Прогулка",n:"Район или туристы в своём городе."}],["Сад",{t:"Ботанический сад",n:"Один маршрут."}],["Рассвет",{t:"Рассвет",n:"Одна точка, кофе с собой."}]]},
+car:{q:"Ночь в городе, другой город или отель?",o:[["Ночь в городе",{t:"Ночная автопрогулка",n:"Один круг."}],["Другой город",{t:"Однодневка в другой город",n:"Туда и обратно сегодня."}],["Отель",{t:"Ночь в отеле своего города",n:"Без плана на утро."}]]}
+};
+let stack=[];
+function go(id,patch){stack.push({id,patch:patch||{}});draw();}
+function back(){if(stack.length>1){stack.pop();draw();}}
+function alarm(){const t=BACK[Math.floor(Math.random()*BACK.length)];
+document.getElementById("card").innerHTML='<div class="tag">Красная кнопка</div><div class="act">'+t+'</div><p class="note">Запас, который точно работает. Список потом заменим.</p><div class="row"><button class="ghost" onclick="restart()">Сначала</button></div>';}
+function restart(){stack=[{id:"start"}];draw();}
+function draw(){
+  const st={};stack.forEach(s=>Object.assign(st,s.patch||{}));
+  const node=N[stack[stack.length-1].id];
+  const bar=document.getElementById("bar");bar.innerHTML="";
+  for(let i=0;i<7;i++){const d=document.createElement("div");d.className="dot"+(i<stack.length?" on":"");bar.appendChild(d);}
+  const card=document.getElementById("card");
+  if(node.t){
+    let title=node.t, note=node.n;
+    if(st.e==="hot"&&node.hot){title=node.hot;note=node.hotn;}
+    card.innerHTML='<div class="tag">Дело на сейчас</div><div class="act">'+title+'</div><p class="note">'+note+'</p><div class="row"><button class="ghost" onclick="back()">Назад</button><button class="ghost" onclick="restart()">Сначала</button></div><button class="alarm" onclick="alarm()">ALARM · запас</button>';
+    return;
+  }
+  card.innerHTML='<div class="q">'+node.q+'</div>'+node.o.map((o,i)=>'<button class="ch" onclick="pick('+i+')">'+o[0]+'</button>').join("")+'<button class="alarm" onclick="alarm()">ALARM · запас</button>'+(stack.length>1?'<div class="row"><button class="ghost" onclick="back()">Назад</button></div>':'');
+}
+function pick(i){const node=N[stack[stack.length-1].id];const o=node.o[i];
+  if(typeof o[1]==="string")go(o[1],o[2]);
+  else go("leaf",{leaf:o[1]});
+}
+N.leaf={get t(){return stack[stack.length-1].patch.leaf.t},get n(){return stack[stack.length-1].patch.leaf.n},get hot(){return stack[stack.length-1].patch.leaf.hot},get hotn(){return stack[stack.length-1].patch.leaf.hotn}};
+restart();
 </script>
-</body></html>
+</body>
+</html>
