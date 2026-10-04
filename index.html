@@ -16,7 +16,7 @@ h1{font-weight:400;font-size:32px;margin:6px 0 4px}
 .dot{height:5px;flex:1;border-radius:99px;background:#3c322b}
 .dot.on{background:var(--acc)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;overflow:hidden}
-.art{width:calc(100% + 36px);margin:-18px -18px 14px;height:168px;object-fit:cover;display:block;border-bottom:1px solid var(--line)}
+.art{width:calc(100% + 36px);margin:-18px -18px 14px;height:220px;object-fit:cover;object-position:center 30%;display:block;border-bottom:1px solid var(--line)}
 .q{font-size:26px;line-height:1.25;margin:0 0 14px}
 button{font:inherit;cursor:pointer}
 .ch{display:block;width:100%;text-align:left;background:var(--btn);color:var(--ink);border:1px solid #56483c;border-radius:16px;padding:16px 14px;margin:0 0 10px;font-size:18px}
@@ -39,42 +39,42 @@ button{font:inherit;cursor:pointer}
 </div>
 <script>
 const ART={
-start:"art/cover.jpg",place:"art/lazy.jpg",energy:"art/tennis.jpg",side:"art/ice.jpg",
-vec:"art/dance.jpg",move:"art/knives.jpg",touch:"art/ice.jpg",playt:"art/costumes.jpg",
-screenp:"art/costumes.jpg",noscreen:"art/ice.jpg",rest:"art/massage.jpg",sam:"art/knives.jpg",
-body:"art/dance.jpg",hands:"art/coffee.jpg",talk:"art/coffee.jpg",watch:"art/sofa.jpg",
-plot:"art/sofa.jpg",bg:"art/lazy.jpg",game:"art/arcade.jpg",one:"art/arcade.jpg",quiz:"art/arcade.jpg",
-own:"art/arcade.jpg",make:"art/coffee.jpg",par:"art/lazy.jpg",parmove:"art/tennis.jpg",
-motor:"art/coffee.jpg",partalk:"art/arcade.jpg",near:"art/dance.jpg",dist:"art/moto.jpg",
-voice:"art/coffee.jpg",dscr:"art/arcade.jpg",dphoto:"art/photo.jpg",ride:"art/moto.jpg",
-pace:"art/forest.jpg",aim:"art/forest.jpg",job:"art/tennis.jpg",sport:"art/badminton.jpg",
-class:"art/knives.jpg",spot:"art/banya.jpg",air:"art/forest.jpg",sit:"art/coffee.jpg",
-food:"art/coffee.jpg",bench:"art/forest.jpg",walk:"art/forest.jpg",feet:"art/forest.jpg",car:"art/moto.jpg"
+start:"art/door.jpg",place:"art/kitchen.jpg",energy:"art/badminton.jpg",side:"art/cafe.jpg",
+vec:"art/dance.jpg",move:"art/knives.jpg",touch:"art/massage.jpg",playt:"art/costumes.jpg",
+screenp:"art/arcade.jpg",noscreen:"art/ice.jpg",rest:"art/massage.jpg",sam:"art/knives.jpg",
+body:"art/dance.jpg",hands:"art/lego.jpg",talk:"art/cafe.jpg",watch:"art/sofa.jpg",
+plot:"art/sofa.jpg",bg:"art/cafe.jpg",game:"art/arcade.jpg",one:"art/board.jpg",quiz:"art/arcade.jpg",
+own:"art/arcade.jpg",make:"art/kitchen.jpg",par:"art/sofa.jpg",parmove:"art/badminton.jpg",
+motor:"art/lego.jpg",partalk:"art/arcade.jpg",near:"art/dance.jpg",dist:"art/moto.jpg",
+voice:"art/cafe.jpg",dscr:"art/arcade.jpg",dphoto:"art/photohunt.jpg",ride:"art/moto.jpg",
+pace:"art/forest.jpg",aim:"art/forest.jpg",job:"art/badminton.jpg",sport:"art/bowling.jpg",
+class:"art/pottery.jpg",spot:"art/banya.jpg",air:"art/sunset.jpg",sit:"art/cafe.jpg",
+food:"art/fire.jpg",bench:"art/sunset.jpg",walk:"art/bikes.jpg",feet:"art/forest.jpg",car:"art/moto.jpg"
 };
 const RESULT={
-"Обучение за просмотром":"art/sofa.jpg","Фотосет костюмчиков":"art/costumes.jpg","Глаза в глаза":"art/ice.jpg",
-"Игрушки":"art/costumes.jpg","Массаж":"art/massage.jpg","Чувственный фокус":"art/massage.jpg",
-"Танцевальная связка":"art/dance.jpg","Тренировка":"art/tennis.jpg","Медленные танцы":"art/dance.jpg",
-"Метание ножей":"art/knives.jpg","Фланкировка шашкой":"art/knives.jpg","Конструктор":"art/lazy.jpg",
-"Кухня":"art/coffee.jpg","Рисунок персонажа":"art/photo.jpg","Фильм":"art/sofa.jpg","Аниме":"art/sofa.jpg",
-"Документалка":"art/sofa.jpg","Подкаст":"art/coffee.jpg","Рилсы":"art/lazy.jpg","Лоу-фай":"art/lazy.jpg",
-"Настолка":"art/coffee.jpg","Угадай песню":"art/karaoke.jpg","Ютуб-квиз":"art/arcade.jpg",
+"Обучение за просмотром":"art/sofa.jpg","Фотосет костюмчиков":"art/costumes.jpg","Глаза в глаза":"art/hotel.jpg",
+"Игрушки":"art/lego.jpg","Массаж":"art/massage.jpg","Чувственный фокус":"art/massage.jpg",
+"Танцевальная связка":"art/dance.jpg","Тренировка":"art/badminton.jpg","Медленные танцы":"art/dance.jpg",
+"Метание ножей":"art/knives.jpg","Фланкировка шашкой":"art/sword.jpg","Конструктор":"art/lego.jpg",
+"Кухня":"art/kitchen.jpg","Рисунок персонажа":"art/board.jpg","Фильм":"art/sofa.jpg","Аниме":"art/sofa.jpg",
+"Документалка":"art/stars.jpg","Подкаст":"art/cafe.jpg","Рилсы":"art/sofa.jpg","Лоу-фай":"art/sofa.jpg",
+"Настолка":"art/board.jpg","Угадай песню":"art/karaoke.jpg","Ютуб-квиз":"art/arcade.jpg",
 "Совместная компьютерная игра":"art/arcade.jpg","Саша играет, Алёна смотрит":"art/arcade.jpg",
 "Каждый в своей игре":"art/arcade.jpg","Озвучка фильма":"art/karaoke.jpg","История с ИИ":"art/sofa.jpg",
-"Ютуб-урок и сразу проба":"art/coffee.jpg","Тренировка full-body":"art/tennis.jpg",
-"Конструктор и ассистент":"art/lazy.jpg","Инструмент и другое дело рядом":"art/coffee.jpg",
-"Алёна танцует, Саша смотрит":"art/dance.jpg","Фото каждый час":"art/photo.jpg","Домашние дела":"art/lazy.jpg",
-"Мягкие вопросы":"art/coffee.jpg","Чтение вслух":"art/sofa.jpg","Кадр каждый час":"art/photo.jpg",
-"Бадминтон":"art/badminton.jpg","Большой теннис":"art/tennis.jpg","Боулинг":"art/arcade.jpg",
-"Бильярд":"art/arcade.jpg","Батутный парк":"art/dance.jpg","Велик или ролики":"art/moto.jpg",
-"Коньки":"art/ice.jpg","Воркаут":"art/tennis.jpg","Каяк или сап":"art/forest.jpg","Аэротруба":"art/moto.jpg",
-"Каток":"art/ice.jpg","Гончарная мастерская":"art/coffee.jpg","Фото-охота":"art/photo.jpg",
-"Баня":"art/banya.jpg","Музей":"art/forest.jpg","Планетарий":"art/forest.jpg","Караоке или бар":"art/karaoke.jpg",
-"Дегустация":"art/coffee.jpg","Двойное свидание":"art/coffee.jpg","Кафе":"art/coffee.jpg",
-"Костёр или шашлыки":"art/forest.jpg","Пикник":"art/forest.jpg","Лавочка":"art/forest.jpg",
-"Закат":"art/forest.jpg","Вода":"art/forest.jpg","Прогулка":"art/forest.jpg","Ботанический сад":"art/forest.jpg",
-"Рассвет":"art/forest.jpg","Ночная автопрогулка":"art/moto.jpg","Однодневка в другой город":"art/moto.jpg",
-"Ночь в отеле своего города":"art/lazy.jpg"
+"Ютуб-урок и сразу проба":"art/pottery.jpg","Тренировка full-body":"art/tramp.jpg",
+"Конструктор и ассистент":"art/lego.jpg","Инструмент и другое дело рядом":"art/kitchen.jpg",
+"Алёна танцует, Саша смотрит":"art/dance.jpg","Фото каждый час":"art/photohunt.jpg","Домашние дела":"art/kitchen.jpg",
+"Мягкие вопросы":"art/cafe.jpg","Чтение вслух":"art/hotel.jpg","Кадр каждый час":"art/photohunt.jpg",
+"Бадминтон":"art/badminton.jpg","Большой теннис":"art/badminton.jpg","Боулинг":"art/bowling.jpg",
+"Бильярд":"art/billiards.jpg","Батутный парк":"art/tramp.jpg","Велик или ролики":"art/bikes.jpg",
+"Коньки":"art/ice.jpg","Воркаут":"art/tramp.jpg","Каяк или сап":"art/kayak.jpg","Аэротруба":"art/tramp.jpg",
+"Каток":"art/ice.jpg","Гончарная мастерская":"art/pottery.jpg","Фото-охота":"art/photohunt.jpg",
+"Баня":"art/banya.jpg","Музей":"art/museum.jpg","Планетарий":"art/stars.jpg","Караоке или бар":"art/karaoke.jpg",
+"Дегустация":"art/cafe.jpg","Двойное свидание":"art/karaoke.jpg","Кафе":"art/cafe.jpg",
+"Костёр или шашлыки":"art/fire.jpg","Пикник":"art/fire.jpg","Лавочка":"art/sunset.jpg",
+"Закат":"art/sunset.jpg","Вода":"art/kayak.jpg","Прогулка":"art/forest.jpg","Ботанический сад":"art/forest.jpg",
+"Рассвет":"art/dawn.jpg","Ночная автопрогулка":"art/moto.jpg","Однодневка в другой город":"art/bikes.jpg",
+"Ночь в отеле своего города":"art/hotel.jpg","Рисунок персонажа по описанию":"art/board.jpg"
 };
 function artFor(){const id=stack[stack.length-1];return ART[id]||"art/cover.jpg";}
 function fig(src){return '<img class="art" src="'+src+'" alt="">';}
