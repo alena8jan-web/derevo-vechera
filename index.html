@@ -16,7 +16,13 @@ h1{font-weight:400;font-size:32px;margin:6px 0 4px}
 .dot{height:5px;flex:1;border-radius:99px;background:#3c322b}
 .dot.on{background:var(--acc)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;overflow:hidden}
-.art{width:calc(100% + 36px);margin:-18px -18px 14px;height:220px;object-fit:cover;object-position:center 30%;display:block;border-bottom:1px solid var(--line)}
+.artbtn{display:block;width:calc(100% + 36px);margin:-18px -18px 14px;padding:0;border:0;background:#1a1512;position:relative}
+.art{width:100%;height:220px;object-fit:cover;object-position:center 20%;display:block}
+.artbtn:after{content:"открыть целиком";position:absolute;right:10px;bottom:8px;background:rgba(28,23,20,.72);color:#f4ece3;font:12px sans-serif;padding:4px 8px;border-radius:99px}
+.full{position:fixed;inset:0;z-index:30;background:rgba(12,9,7,.94);display:flex;align-items:center;justify-content:center;padding:16px}
+.full[hidden]{display:none}
+.full img{max-width:100%;max-height:100%;object-fit:contain;border-radius:12px}
+.full button{position:absolute;top:14px;right:14px;background:#241e1a;color:#f4ece3;border:1px solid #56483c;border-radius:12px;padding:10px 14px;font-family:sans-serif}
 .q{font-size:26px;line-height:1.25;margin:0 0 14px}
 button{font:inherit;cursor:pointer}
 .ch{display:block;width:100%;text-align:left;background:var(--btn);color:var(--ink);border:1px solid #56483c;border-radius:16px;padding:16px 14px;margin:0 0 10px;font-size:18px}
@@ -36,6 +42,10 @@ button{font:inherit;cursor:pointer}
 <p class="sub">Один ведёт вопросы. 10 секунд. Молчите — верхняя кнопка. Красная кнопка — запас, который точно работает.</p>
 <div class="bar" id="bar"></div>
 <div class="card" id="card"></div>
+</div>
+<div class="full" id="full" hidden onclick="closeArt()">
+<img id="fullimg" alt="">
+<button type="button" onclick="closeArt()">Закрыть</button>
 </div>
 <script>
 const ART={
@@ -77,7 +87,9 @@ const RESULT={
 "Ночь в отеле своего города":"art/hotel.jpg","Рисунок персонажа по описанию":"art/board.jpg"
 };
 function artFor(){const id=stack[stack.length-1];return ART[id]||"art/cover.jpg";}
-function fig(src){return '<img class="art" src="'+src+'" alt="">';}
+function fig(src){return '<button type="button" class="artbtn" onclick="openArt(this.dataset.src)" data-src="'+src+'"><img class="art" src="'+src+'" alt=""></button>';}
+function openArt(src){const f=document.getElementById("full");document.getElementById("fullimg").src=src;f.hidden=false;}
+function closeArt(){document.getElementById("full").hidden=true;}
 function pack(q,items){return {q,pick:items};}
 const N={
 start:{q:"Вместе или на расстоянии?",o:[["Вместе","place"],["На расстоянии","dist"]]},
